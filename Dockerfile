@@ -3,8 +3,8 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 COPY build.gradle /app/
-
-COPY src /app/src
+COPY settings.gradle /app/
+COPY src /app/src/
 
 RUN apt-get update && \
     apt-get install -y curl unzip && \
@@ -13,8 +13,9 @@ RUN apt-get update && \
     rm gradle.zip && \
     ln -s /opt/gradle-8.13/bin/gradle /usr/bin/gradle
 
-
 RUN gradle build -x test
+
+RUN ls -l build/libs/
 
 COPY build/libs/*.jar app.jar
 
