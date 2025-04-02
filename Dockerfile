@@ -17,10 +17,8 @@ RUN gradle build -x test
 
 RUN ls -l build/libs/
 
-RUN mkdir -p /app/build/libs
-
-COPY build/libs/*.jar /app/build/libs/app.jar
+ADD build/libs/*.jar /app/app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/app/build/libs/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
