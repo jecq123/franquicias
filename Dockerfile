@@ -15,7 +15,7 @@ RUN apt-get update && \
 
 RUN gradle build -x test
 
-RUN ls -l build/libs/
+RUN echo "Listing build/libs/ directory:" && ls -l build/libs/
 
 COPY build/libs/franquicias-0.0.1-SNAPSHOT.jar /app/app.jar
 
