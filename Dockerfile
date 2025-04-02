@@ -8,7 +8,7 @@ COPY src /app/src
 
 RUN apt-get update && \
     apt-get install -y curl && \
-    curl -sSL https://get.gradle.org/download/gradle-7.5.1-bin.zip -o gradle.zip && \
+    curl -sSL https://services.gradle.org/distributions/gradle-7.5.1-bin.zip -o gradle.zip && \
     unzip gradle.zip -d /opt && \
     rm gradle.zip && \
     ln -s /opt/gradle-7.5.1/bin/gradle /usr/bin/gradle
