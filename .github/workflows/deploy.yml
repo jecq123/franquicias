@@ -22,7 +22,16 @@ jobs:
 
       - name: Preparamos Docker
         uses: docker/setup-buildx-action@v1
-      - name: Build with Gradle
+      - name: Ver si hay wrapper
+        run: |
+          ls gradle/wrapper || echo "Gradle wrapper files not found!"
+
+      - name: Generar Wrapper
+        run: |
+          if [ ! -f gradle/wrapper/gradle-wrapper.jar ]; then
+            gradle wrapper
+          fi
+      - name: Construir con Gradle
         run: |
             chmod +x gradlew
             ./gradlew build -x test 
