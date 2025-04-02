@@ -6,11 +6,17 @@ COPY build.gradle /app/
 
 COPY src /app/src
 
-RUN apt-get update && apt-get install -y gradle && gradle build -x test
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -sSL https://get.gradle.org/download/gradle-7.5.1-bin.zip -o gradle.zip && \
+    unzip gradle.zip -d /opt && \
+    rm gradle.zip && \
+    ln -s /opt/gradle-7.5.1/bin/gradle /usr/bin/gradle
+
+RUN gradle build -x test
 
 COPY build/libs/*.jar app.jar
 
 EXPOSE 8080
 
-# Comando para ejecutar la aplicación Java
 ENTRYPOINT ["java", "-jar", "app.jar"]
