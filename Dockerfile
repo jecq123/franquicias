@@ -17,7 +17,7 @@ RUN gradle build -x test
 
 RUN ls -l build/libs/
 
-ADD build/libs/*.jar /app/app.jar
+COPY build/libs/franquicias-0.0.1-SNAPSHOT.jar /app/app.jar
 
 EXPOSE 8080
 
