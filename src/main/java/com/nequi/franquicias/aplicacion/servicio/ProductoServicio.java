@@ -7,6 +7,7 @@ import com.nequi.franquicias.aplicacion.mapeador.ProductoMapeador;
 import com.nequi.franquicias.aplicacion.puerto.entrada.ProductoServicioInterfaz;
 import com.nequi.franquicias.dominio.modelo.ProductoConSucursal;
 import com.nequi.franquicias.dominio.repositorio.ProductoRepositorio;
+import com.nequi.franquicias.dominio.repositorio.SucursalRepositorio;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,14 +17,19 @@ import java.util.Comparator;
 @Service
 public class ProductoServicio implements ProductoServicioInterfaz {
     private final ProductoRepositorio productoRepositorio;
+    private final SucursalRepositorio sucursalRepositorio;
 
-    public ProductoServicio(ProductoRepositorio productoRepositorio) {
+    public ProductoServicio(ProductoRepositorio productoRepositorio, SucursalRepositorio sucursalRepositorio) {
         this.productoRepositorio = productoRepositorio;
+        this.sucursalRepositorio = sucursalRepositorio;
     }
 
     @Override
     public Mono<Long> crearProducto(ProductoDTO producto) {
-        return productoRepositorio.guardar(ProductoMapeador.aDominio(producto));
+        return sucursalRepositorio.obtenerPorId(producto.getSucursalId()).switchIfEmpty(Mono.error(new ExcepcionRegistroNoEncontrado("Sucursal con id " + producto.getSucursalId() + " no encontrado")))
+                .flatMap(sucursal ->
+                     productoRepositorio.modificarStock(ProductoMapeador.aDominio(producto))
+                );
     }
 
     @Override
